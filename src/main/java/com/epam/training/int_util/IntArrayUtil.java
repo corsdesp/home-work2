@@ -47,5 +47,4 @@ public class IntArrayUtil {
     private static boolean check(int[] array) {
         return (array == null || array.length == 0);
     }
-
 }
