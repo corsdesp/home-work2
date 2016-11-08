@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Утилита для массивов типа {@code int}
  */
-public class IntArrayUtil {
+public final class IntArrayUtil {
     public static int[] changeSize(int[] array, int size) {
         if (check(array) || size < 0) {
             return array;
@@ -28,7 +28,7 @@ public class IntArrayUtil {
         return array;
     }
 
-    public static String printBeautiful(int[] array) {
+    public static String printPretty(int[] array) {
         if (check(array)) {
             return Arrays.toString(array);
         }

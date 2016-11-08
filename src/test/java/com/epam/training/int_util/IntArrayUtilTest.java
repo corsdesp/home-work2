@@ -47,6 +47,6 @@ public class IntArrayUtilTest {
     public void testPrintBeautiful() throws Exception {
         int[] array = new int[]{6, 8, 4, 5, 0, 7, 1, 9, 10, 2, 3};
         String str = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]";
-        assertTrue(IntArrayUtil.printBeautiful(array).equals(str));
+        assertTrue(IntArrayUtil.printPretty(array).equals(str));
     }
 }
