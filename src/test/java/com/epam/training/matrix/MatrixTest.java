@@ -8,57 +8,59 @@ import java.util.Arrays;
 public class MatrixTest {
     @Test
     public void testDeterminantWhereThreeByThreeMatrix() throws Exception {
-        int[][] left = {
+        int[][] array = {
                 {9, 8, 7},
                 {1, 2, 3},
                 {6, 2, 1}};
         int result = 30;
-        Matrix matrix = new Matrix(left);
+        Matrix matrix = new ArrayToMatrixConverter().converter(array);
         Assert.assertTrue(matrix.determinant() == result);
     }
 
     @Test
     public void testDeterminantWhereFourByFourMatrix() {
-        int[][] left = {
+        int[][] array = {
                 {2, 3, 4, 5},
                 {2, 3, 4, 9},
                 {8, 8, 1, 8},
                 {4, 3, 4, 3}};
         int result = -232;
-        Matrix matrix = new Matrix(left);
+        Matrix matrix = new ArrayToMatrixConverter().converter(array);
         Assert.assertTrue(matrix.determinant() == result);
     }
 
     @Test(expected = NullPointerException.class)
     public void determinantWhereMatrixNull() {
-        int[][] left = null;
-        Matrix matrix = new Matrix(left);
+        int[][] array = null;
+        Matrix matrix = new ArrayToMatrixConverter().converter(array);
         matrix.determinant();
     }
 
     @Test
-    public void testFold() throws Exception {
-        int[][] left = {
+    public void testAdd() throws Exception {
+        int[][] firstArray = {
                 {2, 2, 2, 2},
                 {3, 3, 3, 3}};
-        int[][] right = {
+        int[][] secondArray = {
                 {3, 3, 3, 3},
                 {4, 4, 4, 4}};
-        int[][] result = {
+        int[][] resultArray = {
                 {5, 5, 5, 5},
                 {7, 7, 7, 7}};
-        Matrix matrix = new Matrix(left);
-        Assert.assertTrue(Arrays.deepEquals(matrix.fold(right), result));
+        Matrix firstMatrix = new ArrayToMatrixConverter().converter(firstArray);
+        Matrix secondMatrix = new ArrayToMatrixConverter().converter(secondArray);
+        Matrix resultMatrix = firstMatrix.add(secondMatrix);
+        Assert.assertTrue(Arrays.deepEquals(new MatrixToArrayConverter().converter(resultMatrix), resultArray));
     }
 
     @Test
     public void testGetElement() throws Exception {
-        int[][] left = {
+        int[][] array = {
                 {2, 3, 4, 5},
                 {2, 3, 4, 9},
                 {8, 8, 1, 8},
                 {4, 3, 4, 3}};
-        Matrix matrix = new Matrix(left);
+        Matrix matrix = new ArrayToMatrixConverter().converter(array);
         Assert.assertEquals(matrix.getElement(2, 2), 1);
     }
 
@@ -74,13 +76,13 @@ public class MatrixTest {
                 {2, 3, 4, 9},
                 {8, 8, 1, 8},
                 {4, 3, 4, 3}};
-        Matrix matrix = new Matrix(left);
+        Matrix matrix = new ArrayToMatrixConverter().converter(left);
         matrix.setElement(23, 0, 0);
-        Assert.assertTrue(Arrays.deepEquals(matrix.getMatrix(), result));
+        Assert.assertTrue(Arrays.deepEquals(new MatrixToArrayConverter().converter(matrix), result));
     }
 
     @Test
-    public void testMultiplication() throws Exception {
+    public void testMultiply() throws Exception {
         int[][] left = {
                 {2, 12, 3},
                 {4, 32, 1},
@@ -95,7 +97,10 @@ public class MatrixTest {
                 {368, 405, 115, 179},
                 {221, 128, 338, 204},
                 {337, 278, 388, 298}};
-        Matrix matrix = new Matrix(left);
-        Assert.assertTrue(Arrays.deepEquals(matrix.multiplication(right), result));
+        Matrix leftMatrix = new ArrayToMatrixConverter().converter(left);
+        Matrix rightMatrix = new ArrayToMatrixConverter().converter(right);
+        Matrix resultMatrix = leftMatrix.multiply(rightMatrix);
+
+        Assert.assertTrue(Arrays.deepEquals(new MatrixToArrayConverter().converter(resultMatrix), result));
     }
 }

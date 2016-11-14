@@ -1,81 +1,78 @@
 package com.epam.training.matrix;
 
 public class Matrix {
-    private int[][] left;
-    private int rowCount;
-    private int columnCount;
-
-    public Matrix(int[][] left) {
-        this.left = left;
-    }
+    private int[][] elements;
 
     public Matrix(int rowCount, int columnCount) {
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
-        this.left = new int[rowCount][columnCount];
-    }
-
-    public int[][] getMatrix() {
-        return left;
+        this.elements = new int[rowCount][columnCount];
     }
 
     public int getElement(int row, int column) {
-        if (checkMatrixField(row, column)) {
+        if (checkField(row, column)) {
             throw new IllegalArgumentException();
         }
-        return left[row][column];
+        return elements[row][column];
     }
 
     public void setElement(int element, int row, int column) {
-        if (checkMatrixField(row, column)) {
+        if (checkField(row, column)) {
             throw new IllegalArgumentException();
         }
-        left[row][column] = element;
+        elements[row][column] = element;
     }
 
-    private boolean checkMatrixField(int row, int column) {
-        return ((getRowCount(left) < row) || (getColumnCount(left) < column)) && ((row < 0) || (column < 0));
+    public int getRowCount() {
+        return elements.length;
     }
 
-    public int[][] fold(int[][] right) {
-        if (checkMatrix(left) || checkMatrix(right)) {
-            return left;
+    public int getColumnCount() {
+        return elements[0].length;
+    }
+
+    private int[] getRow(int rowNumber) {
+        return elements[rowNumber];
+    }
+
+    private int[] getColumn(int columnNumber) {
+        int[] result = new int[getRowCount()];
+        for (int rowNumber = 0; rowNumber < getRowCount(); rowNumber++) {
+            result[rowNumber] = elements[rowNumber][columnNumber];
         }
-        if ((getRowCount(left) != getRowCount(right)) || (getColumnCount(left) != getColumnCount(right))) {
+        return result;
+    }
+
+    private boolean checkMatrix() {
+        return (elements == null || elements.length == 0 || elements[0] == null || elements[0].length == 0);
+    }
+
+    private boolean checkField(int row, int column) {
+        return (((getRowCount() < row) || (getColumnCount() < column)) && ((row < 0) || (column < 0)));
+    }
+
+    public Matrix add(Matrix other) {
+        if ((getRowCount() != other.getRowCount()) || (getColumnCount() != other.getColumnCount())) {
             throw new IllegalArgumentException();
         }
-        int[][] result = new int[getRowCount(left)][getColumnCount(left)];
-        for (int rowNumber = 0; rowNumber < getRowCount(left); rowNumber++) {
-            for (int columnNumber = 0; columnNumber < getColumnCount(left); columnNumber++) {
-                result[rowNumber][columnNumber] = left[rowNumber][columnNumber] + right[rowNumber][columnNumber];
+        Matrix result = new Matrix(getRowCount(), getColumnCount());
+        for (int rowNumber = 0; rowNumber < getRowCount(); rowNumber++) {
+            for (int columnNumber = 0; columnNumber < getColumnCount(); columnNumber++) {
+                result.setElement(elements[rowNumber][columnNumber] + other.getElement(rowNumber, columnNumber), rowNumber, columnNumber);
             }
         }
         return result;
     }
 
-    private boolean checkMatrix(int[][] matrix) {
-        return (matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0);
-    }
-
-    private int getRowCount(int[][] matrix) {
-        return matrix.length;
-    }
-
-    private int getColumnCount(int[][] matrix) {
-        return matrix[0].length;
-    }
-
     public int determinant() {
-        if (checkMatrix(left)) {
-            throw new NullPointerException();
+        if (checkMatrix()) {
+            throw new IllegalArgumentException();
         }
-        int length = left.length - 1;
+        int length = elements.length - 1;
         if (length < 0) {
             return 0;
         }
         int tripleArray[][][] = new int[length + 1][][];
 
-        tripleArray[length] = left;
+        tripleArray[length] = elements;
 
         for (int i = 0; i < length; i++) {
             tripleArray[i] = new int[i + 1][i + 1];
@@ -102,38 +99,26 @@ public class Matrix {
         return result;
     }
 
-    public int[][] multiplication(int[][] right) {
-        if (checkMatrix(left) || checkMatrix(right)) {
+    public Matrix multiply(Matrix right) {
+        if (checkMatrix() || right.checkMatrix()) {
             throw new IllegalArgumentException("Illegal matrix  argument");
         }
-        if (getColumnCount(left) != getRowCount(right)) {
+        if (getColumnCount() != right.getRowCount()) {
             throw new IllegalArgumentException("Matrix can not multiply");
         }
-        int[][] result = new int[getRowCount(left)][getColumnCount(right)];
-        for (int rowNumber = 0; rowNumber < getRowCount(left); rowNumber++) {
-            for (int columnNumber = 0; columnNumber < getColumnCount(right); columnNumber++) {
-                result[rowNumber][columnNumber] = multiplyVector(getRow(left, rowNumber), getColumn(right, columnNumber));
+        int[][] result = new int[this.getRowCount()][right.getColumnCount()];
+        for (int rowNumber = 0; rowNumber < this.getRowCount(); rowNumber++) {
+            for (int columnNumber = 0; columnNumber < right.getColumnCount(); columnNumber++) {
+                result[rowNumber][columnNumber] = multiplyVector(this.getRow(rowNumber), right.getColumn(columnNumber));
             }
         }
-        return result;
+        return new ArrayToMatrixConverter().converter(result);
     }
 
     private int multiplyVector(int[] row, int[] column) {
         int result = 0;
         for (int i = 0; i < row.length; i++) {
             result += row[i] * column[i];
-        }
-        return result;
-    }
-
-    private int[] getRow(int[][] left, int rowNumber) {
-        return left[rowNumber];
-    }
-
-    private int[] getColumn(int[][] matrix, int columnNumber) {
-        int[] result = new int[getRowCount(matrix)];
-        for (int rowNumber = 0; rowNumber < getRowCount(matrix); rowNumber++) {
-            result[rowNumber] = matrix[rowNumber][columnNumber];
         }
         return result;
     }
