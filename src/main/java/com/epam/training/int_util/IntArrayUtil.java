@@ -1,5 +1,7 @@
 package com.epam.training.int_util;
 
+import com.epam.training.int_util.Predicate.Predicate;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -52,5 +54,20 @@ public final class IntArrayUtil {
 
     private static boolean check(int[] array) {
         return (array == null || array.length == 0);
+    }
+
+    public static int[] filter(int[] array, Predicate predicate) {
+        if (check(array)) {
+            return new int[0];
+        }
+        int[] result = new int[array.length];
+        int resultArrayLenght = 0;
+        for (int value : array) {
+            if (predicate.check(value)) {
+                result[resultArrayLenght] = value;
+                resultArrayLenght++;
+            }
+        }
+        return Arrays.copyOf(result, resultArrayLenght);
     }
 }

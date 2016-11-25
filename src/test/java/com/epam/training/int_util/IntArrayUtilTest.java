@@ -1,5 +1,6 @@
 package com.epam.training.int_util;
 
+import com.epam.training.int_util.Predicate.*;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -48,5 +49,40 @@ public class IntArrayUtilTest {
         int[] array = new int[]{6, 8, 4, 5, 0, 7, 1, 9, 10, 2, 3};
         String str = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]";
         assertTrue(IntArrayUtil.printPretty(array).equals(str));
+    }
+
+    @Test
+    public void testPredicateEven() throws Exception {
+        int[] array = new int[]{2, 3, 4, 5, 6};
+        int[] result = new int[]{2, 4, 6};
+        assertTrue(Arrays.equals(IntArrayUtil.filter(array, new Even()), result));
+    }
+
+    @Test
+    public void testPredicateHundred() throws Exception {
+        int[] array = new int[]{2, 100, 4, 205, 777};
+        int[] result = new int[]{100, 205, 777};
+        assertTrue(Arrays.equals(IntArrayUtil.filter(array, new Hundred()), result));
+    }
+
+    @Test
+    public void testPredicateNegative() throws Exception {
+        int[] array = new int[]{-2, 3, 0, -5, 6, -4};
+        int[] result = new int[]{-2, -5, -4};
+        assertTrue(Arrays.equals(IntArrayUtil.filter(array, new Negative()), result));
+    }
+
+    @Test
+    public void testPredicatePositive() throws Exception {
+        int[] array = new int[]{-2, 3, 0, -5, 6, -4};
+        int[] result = new int[]{3, 6};
+        assertTrue(Arrays.equals(IntArrayUtil.filter(array, new Positive()), result));
+    }
+
+    @Test
+    public void testPredicateUneven() throws Exception {
+        int[] array = new int[]{2, 3, 4, 5, 6};
+        int[] result = new int[]{3, 5};
+        assertTrue(Arrays.equals(IntArrayUtil.filter(array, new Uneven()), result));
     }
 }
