@@ -103,4 +103,19 @@ public class MatrixTest {
 
         Assert.assertTrue(Arrays.deepEquals(new MatrixToArrayConverter().converter(resultMatrix), result));
     }
+
+    @Test
+    public void testClone() throws Exception {
+        int[][] array = {
+                {2, 3, 4, 5},
+                {2, 3, 4, 9},
+                {8, 8, 1, 8},
+                {4, 3, 4, 3}};
+        Matrix matrix = new ArrayToMatrixConverter().converter(array);
+        Matrix clone = matrix.clone();
+        matrix.setElement(2, 0, 1);
+
+        Assert.assertEquals(clone.getElement(0, 1), clone.getElement(0, 1));
+    }
+
 }
