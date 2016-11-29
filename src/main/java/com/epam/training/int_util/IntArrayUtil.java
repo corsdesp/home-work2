@@ -61,13 +61,13 @@ public final class IntArrayUtil {
             return new int[0];
         }
         int[] result = new int[array.length];
-        int resultArrayLenght = 0;
+        int resultArrayLength = 0;
         for (int value : array) {
             if (predicate.check(value)) {
-                result[resultArrayLenght] = value;
-                resultArrayLenght++;
+                result[resultArrayLength] = value;
+                resultArrayLength++;
             }
         }
-        return Arrays.copyOf(result, resultArrayLenght);
+        return Arrays.copyOf(result, resultArrayLength);
     }
 }
