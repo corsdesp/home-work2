@@ -122,4 +122,14 @@ public class Matrix {
         }
         return result;
     }
+
+    public Matrix clone() {
+        Matrix result = new Matrix(getRowCount(), getColumnCount());
+        for (int rowNumber = 0; rowNumber < getRowCount(); rowNumber++) {
+            for (int columnNumber = 0; columnNumber < getColumnCount(); columnNumber++) {
+                result.setElement(elements[rowNumber][columnNumber], rowNumber, columnNumber);
+            }
+        }
+        return result;
+    }
 }
